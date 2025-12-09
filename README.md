@@ -6,7 +6,7 @@ This project evaluates the performance of a marketing nurture email campaign by 
 ### 🎯 Objectives
 To assess significance properly in a repeated-measures setting, we apply sequential analysis techniques—specifically the O’Brien–Fleming (OBF) and Pocock alpha-spending methods.
 
-These approaches:
+#### These approaches:
 - Control the overall Type I error rate
 - Reduce false positives compared to a traditional fixed α = 0.05
 - Provide statistically valid early-stopping guidelines
@@ -19,38 +19,38 @@ The analysis uses the Nurture Email Performance Dataset, which includes: Days to
 ### 💻 Analytical Approach
 We monitor significance over time using both frequentist and Bayesian frameworks:
 
-1. Frequentist Sequential Testing — Observed p-values and Z-statistics are compared against:
+#### 1. Frequentist Sequential Testing — Observed p-values and Z-statistics are compared against:
 - OBF alpha boundary — very conservative early, less strict later
 - Pocock boundary — constant significance threshold
 - Traditional α = 0.05 — for baseline comparison
 
-2. Bayesian Inference — A daily-updated Beta–Binomial model estimates:
+#### 2. Bayesian Inference — A daily-updated Beta–Binomial model estimates:
 - Posterior mean difference (Test – Control)
 - 95% credible intervals
 - Posterior probability that Test is better than Control
 
 ### 📁 Key Findings
-1. P-value vs. Sequential Alpha Boundaries
+#### 1. P-value vs. Sequential Alpha Boundaries
 - The p-value curve never crosses any of the sequential alpha thresholds.
 - There is no frequentist evidence of a statistically significant lift.
 
-2. Z-statistic vs. Z-Boundaries
+#### 2. Z-statistic vs. Z-Boundaries
 - Z-scores remain far below the OBF and Pocock critical values at all time points.
 - This confirms the p-value conclusion: no early-stopping signal.
 
-3. Bayesian Posterior Mean & 95% CI
+#### 3. Bayesian Posterior Mean & 95% CI
 - Posterior mean difference remains approximately zero throughout the monitoring period.
 - The 95% credible interval consistently includes zero.
 - Bayesian evidence indicates no meaningful lift from the Test group.
 
-4. Posterior Probability Test > Control
+#### 4. Posterior Probability Test > Control
 - The posterior probability that Test outperforms Control remains around 0.50–0.55.
 - This is well below typical decision thresholds (e.g., 0.90, 0.95, 0.99).
 - Bayesian decision rules therefore do not support declaring the Test as a winner.
 
 ### 📑 Recommendations
 1. Continue the Experiment
-Current evidence—frequentist and Bayesian—does not support stopping or adopting the Test version.
+Current evidence — frequentist and Bayesian — does not support stopping or adopting the Test version.
 
 2. Consider Increasing Sample Size or Duration
 If the expected lift is small, additional data are needed to achieve adequate statistical power.
