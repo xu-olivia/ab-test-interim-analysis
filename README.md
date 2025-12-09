@@ -1,53 +1,59 @@
 # Interim Analysis for A/B Testing
 
+### 📌 Overview
+This project evaluates the performance of a marketing nurture email campaign by comparing the response rate between the Test group and the Control group. The goal is to determine whether the Test variant produces a statistically meaningful lift in engagement.
 
-1. Data Loading and Preparation
-- Imported the synthetic dataset containing the daily response rate of both test and control groups.
-- Ensured each day has both groups represented.
+### 🎯 Objectives
+To assess significance properly in a repeated-measures setting, we apply sequential analysis techniques—specifically the O’Brien–Fleming (OBF) and Pocock alpha-spending methods.
 
-2. Frequentist Interim Analysis
-- Computed cumulative mean differences between test and control groups.
-- Calculated standard errors and Z-scores for each interim look.
-- Applied an O'Brien-Fleming group sequential monitoring boundary to control Type I error inflation.
-- Generated p-values at each interim checkpoint.
-- Identified the crossover where the test group initially leads (Days 1–50), then the control group
-overtakes (Day 51 onward).
-How to interpret
-If the Z-score crosses the dashed boundary, the effect (test > control) is strong enough to justify early stopping for efficacy.
+These approaches:
+- Control the overall Type I error rate
+- Reduce false positives compared to a traditional fixed α = 0.05
+- Provide statistically valid early-stopping guidelines
 
+This ensures that any decision to stop, continue, or adopt the Test version is grounded in rigorous inference rather than noisy short-term fluctuations.
 
-If the Z-score remains below the boundary, the evidence is not yet strong enough for early stopping.
+### 📈 Data Sources
+The analysis uses the Nurture Email Performance Dataset, which includes: Days to Respond, Group (Test vs. Control), Cumulative Responses, Leads and Cumulative Response Rate.
 
+### 💻 Analytical Approach
+We monitor significance over time using both frequentist and Bayesian frameworks:
 
-3. Bayesian Interim Analysis
-- Implemented normal–normal conjugate updating with prior variance t² = 1.0.
-- Computed posterior mean, posterior variance, and 95% credible intervals.
-- Estimated posterior probability that the test group outperforms control at each interim look.
-How to interpret
-When the entire shaded interval is above zero, there's strong evidence test > control.
+1. Frequentist Sequential Testing — Observed p-values and Z-statistics are compared against:
+- OBF alpha boundary — very conservative early, less strict later
+- Pocock boundary — constant significance threshold
+- Traditional α = 0.05 — for baseline comparison
 
+2. Bayesian Inference — A daily-updated Beta–Binomial model estimates:
+- Posterior mean difference (Test – Control)
+- 95% credible intervals
+- Posterior probability that Test is better than Control
 
-When it includes zero, the data are inconclusive.
+### 📁 Key Findings
+1. P-value vs. Sequential Alpha Boundaries
+- The p-value curve never crosses any of the sequential alpha thresholds.
+- There is no frequentist evidence of a statistically significant lift.
 
+2. Z-statistic vs. Z-Boundaries
+- Z-scores remain far below the OBF and Pocock critical values at all time points.
+- This confirms the p-value conclusion: no early-stopping signal.
 
-When it's below zero, the control appears better.
-4. Posterior Probability That Test > Control
-This curve gives the probability, given all data so far, that the test group outperforms the control group.
+3. Bayesian Posterior Mean & 95% CI
+- Posterior mean difference remains approximately zero throughout the monitoring period.
+- The 95% credible interval consistently includes zero.
+- Bayesian evidence indicates no meaningful lift from the Test group.
 
-How to interpret
-Values near 1.0 → strong belief test is better.
+4. Posterior Probability Test > Control
+- The posterior probability that Test outperforms Control remains around 0.50–0.55.
+- This is well below typical decision thresholds (e.g., 0.90, 0.95, 0.99).
+- Bayesian decision rules therefore do not support declaring the Test as a winner.
 
+### 📑 Recommendations
+1. Continue the Experiment
+Current evidence—frequentist and Bayesian—does not support stopping or adopting the Test version.
 
-Values near 0.5 → no meaningful difference.
+2. Consider Increasing Sample Size or Duration
+If the expected lift is small, additional data are needed to achieve adequate statistical power.
 
-
-Values near 0.0 → strong belief control is better.
-
-
-
-4. Insights
-- The cumulative response rates show an expected pattern: test group dominates early, then control group surpasses late.
-- Frequentist Z-curve stays below the O'Brien-Fleming boundary, suggesting no early stopping signal.
-- Bayesian posterior probability increases early but declines after the crossover point.
-- Posterior credible intervals narrow as more data accumulate, improving certainty about the treatment difference.
-
+3. Re-evaluate After More Data Accumulate
+Ongoing sequential monitoring will remain valid and will help ensure decisions are data-driven and defensible.
